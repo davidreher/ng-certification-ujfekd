@@ -1,5 +1,8 @@
 import { Component, Input, OnInit } from "@angular/core";
+import { Observable } from "rxjs";
 import { WeatherConditionService } from "../weather-condition.service";
+import { WeatherLocationService } from "../weather-location.service";
+import { CurrentWeather } from "../weather.model";
 
 @Component({
   selector: "app-weather-card",
@@ -8,11 +11,20 @@ import { WeatherConditionService } from "../weather-condition.service";
 })
 export class WeatherCardComponent implements OnInit {
   @Input() zipCode: string;
-  conditions: any;
+  conditions$: Observable<CurrentWeather>;
 
-  constructor(private weatherConditionService: WeatherConditionService) {}
+  constructor(
+    private readonly weatherConditionService: WeatherConditionService,
+    private readonly weatherLocationService: WeatherLocationService
+  ) {}
 
   ngOnInit() {
-    this.conditions = this.weatherConditionService.getConditions(this.zipCode);
+    this.conditions$ = this.weatherConditionService.getCurrentConditions(
+      this.zipCode
+    );
+  }
+
+  removeLocation() {
+    this.weatherLocationService.removeLocation(this.zipCode);
   }
 }

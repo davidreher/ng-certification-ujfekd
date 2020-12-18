@@ -1,2 +1,2 @@
 <app-zip-form></app-zip-form>
-<app-weather-card></app-weather-card>
+<app-weather-card *ngFor="let zip of zipCodes" [zipCode]="zip"></app-weather-card>

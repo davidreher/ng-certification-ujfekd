@@ -25,6 +25,13 @@ export class WeatherLocationService {
     );
   }
 
+  removeLocation(zipCode: string): void {
+    const index = this.zipCodes.indexOf(zipCode);
+    if (index >= 0) {
+      this.zipCodes.splice(index, 1);
+    }
+  }
+
   private restoreLocations(): void {
     this.zipCodes = JSON.parse(
       this.window.localStorage.getItem(ZIP_STORAGE_KEY)
