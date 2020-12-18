@@ -3,7 +3,12 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { API_KEY } from "../../environment/environment";
-import { CurrentWeather, CurrentWeatherApiModel } from "./weather.model";
+import {
+  CurrentWeather,
+  CurrentWeatherApiModel,
+  Forecast,
+  ForecastApiModel
+} from "./weather.model";
 
 const mapConditionToIcon = (condition: string): string => {
   switch (condition) {
@@ -40,6 +45,27 @@ export class WeatherConditionService {
             min: res.main.temp_min
           },
           icon: mapConditionToIcon(res.weather[0].main)
+        }))
+      );
+  }
+
+  getForecast(zipCode: string): Observable<Forecast> {
+    return this.http
+      .get<ForecastApiModel>(
+        `https://api.openweathermap.org/data/2.5/forecast/daily?zip=${zipCode},us&appid=${API_KEY}&units=imperial&cnt=5`
+      )
+      .pipe(
+        map(res => ({
+          city: res.city.name,
+          list: res.list.map(entry => ({
+            date: entry.dt * 1000,
+            temperatures: {
+              min: entry.temp.min,
+              max: entry.temp.max
+            },
+            conditions: entry.weather[0].main,
+            icon: mapConditionToIcon(entry.weather[0].main)
+          }))
         }))
       );
   }

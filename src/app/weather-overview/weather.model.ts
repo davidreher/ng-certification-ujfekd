@@ -20,6 +20,27 @@ export type CurrentWeather = {
   };
 };
 
-export type ForecastApiModel = {};
+export type ForecastApiModel = {
+  city: { name: string };
+  list: {
+    dt: number;
+    weather: { main: string }[];
+    temp: {
+      min: number;
+      max: number;
+    };
+  }[];
+};
 
-export type Forecast = {};
+export type Forecast = {
+  city: string;
+  list: {
+    date: number;
+    conditions: string;
+    temperatures: {
+      min: number;
+      max: number;
+    };
+    icon: string;
+  }[];
+};
