@@ -33,8 +33,9 @@ export class WeatherLocationService {
   }
 
   private restoreLocations(): void {
-    this.zipCodes = JSON.parse(
-      this.window.localStorage.getItem(ZIP_STORAGE_KEY)
-    );
+    const storedLocations = this.window.localStorage.getItem(ZIP_STORAGE_KEY);
+    if (storedLocations) {
+      this.zipCodes = JSON.parse(storedLocations);
+    }
   }
 }
